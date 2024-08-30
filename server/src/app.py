@@ -1,9 +1,10 @@
 from flask import Flask
-
+from routes.signup import signup
 from dotenv import load_dotenv
 import os
 
 app = Flask(__name__)
+app.register_blueprint(signup)
 
 load_dotenv()
 
