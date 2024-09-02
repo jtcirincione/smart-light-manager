@@ -16,6 +16,8 @@ services:
       - 5000:5000
     volumes:
       - ./server/src:/app/src
+    env_file:
+      - .env
 
   proxy:
     image: nginx:latest

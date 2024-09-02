@@ -3,3 +3,8 @@ mysql-connector-python==9.0.0
 python-dotenv
 flask-sqlalchemy==3.1.1
 pyjwt
+pymysql
+python-kasa
+asyncio
+fastapi
+uvicorn
