@@ -4,7 +4,7 @@ import lights, asyncio
 kasa_routes = Blueprint("kasaroutes", __name__)
 
 @kasa_routes.route("/lights/on")
-@token_required(required_permissions=["Admin"])
+@token_required(required_permissions=["manager"])
 def turn_on(user):
     try:
         asyncio.run(lights.on())
@@ -13,7 +13,7 @@ def turn_on(user):
     return "", 200
 
 @kasa_routes.route("/lights/off", methods=["GET"])
-@token_required(required_permissions=["Admin"])
+@token_required(required_permissions=["manager"])
 def turn_off(user):
     try:
         asyncio.run(lights.off())

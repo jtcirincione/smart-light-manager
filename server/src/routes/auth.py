@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, request, make_response, current_app
+from flask import Flask, Blueprint, request, make_response, current_app, Response
 import jwt, hashlib, os, json
 from datetime import datetime, timedelta
 from functools import wraps
@@ -6,6 +6,7 @@ from middleware.validate_token import token_required
 from models.user import User
 from database import db
 from sqlalchemy import exc
+from utils.db_helper import create_user, add_role
 
 auth = Blueprint('signup', __name__)
 
@@ -29,8 +30,7 @@ def register():
     user = User(username=username, email=email, password=password_hash, salt=salt.hex())
     with current_app.app_context():
         try:
-            db.session.add(user)
-            db.session.commit()
+            create_user(user)
         except Exception as e:
             print(f"Unable to add data to database: {e}")
             if type(e) == exc.IntegrityError:
@@ -78,7 +78,6 @@ def login():
                     "data": None,
             }, 500  
         expiration_time = datetime.utcnow() + timedelta(hours=1)  # Token expires in 1 hour
-        print(type(current_app.config["SECRET_KEY"]))
         token = jwt.encode(
                     {"user_id": user.user_id,
                      "exp": expiration_time,
@@ -101,3 +100,9 @@ def status(user: User):
         "data": user.toJSON(),
         "message": "Success"
         }, 200
+
+@auth.route("/auth/logout", methods=["DELETE"])
+@token_required(required_permissions=None)
+def logout(user: User):
+    response = make_response()
+    response.delete_cookie(key="token", secure=True, httponly=True)

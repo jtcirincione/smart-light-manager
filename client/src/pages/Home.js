@@ -31,9 +31,14 @@ function Home() {
         }
     };
 
+    const handleLogout = async () => {
+        const response = await fetch("/server/auth/logout")
+    }
+
     return (
         <div>
             <h1 className="flex justify-center text-3xl">John's Lights</h1>
+            <a href="https://lights.john-projects.org/login" onClick={handleLogout}>logout</a>
             <div className="flex justify-center">
                 <button className="mt-10 mx-4 mb-8 border py-1 px-24 rounded-md border-black bg-green-300" onClick={turnOn}>
                     on
