@@ -8,8 +8,8 @@ kasa_routes = Blueprint("kasaroutes", __name__)
 def turn_on(user):
     try:
         asyncio.run(lights.on())
-    except:
-        pass
+    except Exception as e:
+        return {"error": str(e)}, 200
     return "", 200
 
 @kasa_routes.route("/lights/off", methods=["GET"])
@@ -17,6 +17,6 @@ def turn_on(user):
 def turn_off(user):
     try:
         asyncio.run(lights.off())
-    except:
-        pass
+    except Exception as e:
+        return {"error": str(e)}, 200
     return "", 200

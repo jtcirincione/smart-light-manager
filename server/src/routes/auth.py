@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, request, make_response, current_app, Response
+from flask import Flask, Blueprint, request, make_response, current_app, Response, session
 import jwt, hashlib, os, json
 from datetime import datetime, timedelta
 from functools import wraps
@@ -54,7 +54,6 @@ def login():
     data = request.json
     username: str = data['username']
     password: str = data['password']
-
     with current_app.app_context():
         try:
             # db.session.add(user)
@@ -86,7 +85,8 @@ def login():
                     algorithm="HS512"
                 )
         response = make_response()
-        response.set_cookie("token", token, max_age=3600, httponly=True, secure=True)
+        response.headers["Cache-Control"] = "no-store"
+        response.set_cookie("token", token, max_age=3600, httponly=True, secure=True, domain="lights.john-projects.org")
         response.status_code = 200
         return response
 
@@ -102,7 +102,15 @@ def status(user: User):
         }, 200
 
 @auth.route("/auth/logout", methods=["DELETE"])
-@token_required(required_permissions=None)
-def logout(user: User):
+def logout():
     response = make_response()
-    response.delete_cookie(key="token", secure=True, httponly=True)
+    try:
+        response.headers["Cache-Control"] = "no-store"
+        response.set_cookie("token", "", max_age=0, expires=0, secure=True, httponly=True, domain="lights.john-projects.org")
+        # session.pop("token", None)
+    except Exception as e:
+        print(e)
+        return {
+            "error": str(e)
+        }, 500
+    return response

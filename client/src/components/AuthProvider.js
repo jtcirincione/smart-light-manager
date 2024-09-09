@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, Children, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 
 
 export const AuthContext = createContext()
@@ -23,14 +23,16 @@ const AuthProvider = ({children}) => {
                 .catch((err) => {
                     console.log(err);
                 });
-        }
-        checkAuthStatus();
+            }
+            checkAuthStatus();
+        // setTimeout(checkAuthStatus, 20000)
+        ;
     }, []);
 
     return (
-        <AuthProvider.Provider value={{isAuthenticated, isLoading, user}}>
+        <AuthContext.Provider value={{isAuthenticated, isLoading, user}}>
             {children}
-        </AuthProvider.Provider>
+        </AuthContext.Provider>
     )
 };
 

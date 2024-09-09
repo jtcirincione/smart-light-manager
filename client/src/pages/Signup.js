@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import UnautheticatedHeader from '../components/UnauthenticatedHeader';
 
 function Signup() {
 
@@ -11,14 +12,14 @@ function Signup() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-            
+
             },
-            body: JSON.stringify({username, email, password}),
+            body: JSON.stringify({ username, email, password }),
         }).catch(err => {
             alert("Unknown Error")
         });
-        
-        
+
+
         if (response.status === 201) {
             alert("Account created successfully!")
             window.location.href = "/login";
@@ -37,29 +38,33 @@ function Signup() {
     const handleUsernameChange = (event) => {
         setUsername(event.target.value)
     }
-    
+
     const handlePasswordChange = (event) => {
         setPassword(event.target.value)
     }
 
     return (
-        <div className="">
-            <h1 className="flex justify-center text-3xl">John's Lights</h1>
-            <div className="flex justify-center">
-                <div className="ml-5 mt-16">
-                    <span className="flex justify-center border-black border-opacity-40 border rounded-md py-3  w-auto text-2xl">Signup</span>
-                    <img src="/lights.jpg" alt="lights" className="mt-10 p-3 w-[300px]"></img>
-                    <div className="flex justify-end items-center mt-4">Username: <input placeholder="username" value={username} onChange={handleUsernameChange} className="p-2 mt-4 ml-2 text-md font-bold border border-gray-900 rounded-lg drop-shadow-lg"/></div>
-                    <div className="flex justify-end items-center mt-4">Email: <input placeholder="email" value={email} onChange={handleEmailChange} className="p-2 mt-4 ml-2 text-md font-bold border border-gray-900 rounded-lg drop-shadow-lg"/></div>
-                    <div className="flex justify-end items-center mt-4">Password: <input placeholder="password" value={password} onChange={handlePasswordChange} className="p-2 mt-4 ml-2 text-md font-bold border border-gray-900 rounded-lg drop-shadow-lg"/></div>
-                    <a className="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="https://lights.john-projects.org/login">I already have an account</a>
-                    <button className="mt-10 border py-1 px-5 rounded-md border-black bg-green-300 w-full mb-8" onClick={submit}>Submit</button>
+        
+        <UnautheticatedHeader>
+            <div className="">
+                <h1 className="flex justify-center text-3xl">John's Lights</h1>
+                <div className="flex justify-center">
+                    <div className="ml-5 mt-16">
+                        <span className="flex justify-center border-black border-opacity-40 border rounded-md py-3  w-auto text-2xl">Signup</span>
+                        <img src="/lights.jpg" alt="lights" className="mt-10 p-3 w-[300px]"></img>
+                        <div className="flex justify-end items-center mt-4">Username: <input placeholder="username" value={username} onChange={handleUsernameChange} className="p-2 mt-4 ml-2 text-md font-bold border border-gray-900 rounded-lg drop-shadow-lg" /></div>
+                        <div className="flex justify-end items-center mt-4">Email: <input placeholder="email" value={email} onChange={handleEmailChange} className="p-2 mt-4 ml-2 text-md font-bold border border-gray-900 rounded-lg drop-shadow-lg" /></div>
+                        <div className="flex justify-end items-center mt-4">Password: <input placeholder="password" value={password} onChange={handlePasswordChange} className="p-2 mt-4 ml-2 text-md font-bold border border-gray-900 rounded-lg drop-shadow-lg" /></div>
+                        <a className="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="https://lights.john-projects.org/login">I already have an account</a>
+                        <button className="mt-10 border py-1 px-5 rounded-md border-black bg-green-300 w-full mb-8" onClick={submit}>Submit</button>
+                    </div>
+                </div>
+                <div className="">
+
                 </div>
             </div>
-            <div className="">
-                
-            </div>
-        </div>
+        </UnautheticatedHeader>
+        
     );
 }
 
