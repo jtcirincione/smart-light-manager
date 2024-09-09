@@ -109,7 +109,6 @@ def logout():
         response.set_cookie("token", "", max_age=0, expires=0, secure=True, httponly=True, domain="lights.john-projects.org")
         # session.pop("token", None)
     except Exception as e:
-        print(e)
         return {
             "error": str(e)
         }, 500

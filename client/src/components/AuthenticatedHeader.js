@@ -33,7 +33,7 @@ function AuthenticatedHeader({children}) {
                         {/* Logo */}
                         <Link to="/" className="block">
                             <h1 className="ml-2 text-3xl font-extrabold">
-                                Pet<span className="text-white">Net</span>
+                                John's <span className="text-white">Lights</span>
                             </h1>
                         </Link>
 
@@ -42,7 +42,7 @@ function AuthenticatedHeader({children}) {
                             <Link to="/" className="text-white hover:text-gray-300">
                                 Admin Settings
                             </Link>
-                            <button className="text-red-500 pr-5" onClick={handleLogout}>
+                            <button className="text-red-600 pr-5" onClick={handleLogout}>
                                 Logout
                             </button>
                         </div>

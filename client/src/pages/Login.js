@@ -20,8 +20,6 @@ function Login() {
         console.log("Status: " + response.status)
 
         if (response.status === 200) {
-            console.log("repoop")
-            alert("hooray! you're logged in.");
             window.location.href = "/";
         }
         else {
