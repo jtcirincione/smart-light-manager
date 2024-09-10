@@ -25,6 +25,14 @@ def get_user_by_name(username: str) -> User:
     user = db.session.query(User).filter_by(username=username).first()
     return user
 
+def get_users_by_name_like(uname: str) -> list[str]:
+    search = f"{uname}%"
+    users: list[User] = db.session.query(User).filter(User.username.like(search))
+    if not users:
+        return []
+    return [user.username for user in users]
+
+
 def add_role(user: User, role: RoleEnum) -> None:
     with current_app.app_context():
         if not user_has_role(user, role):

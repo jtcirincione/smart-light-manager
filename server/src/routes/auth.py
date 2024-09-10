@@ -6,7 +6,7 @@ from middleware.validate_token import token_required
 from models.user import User
 from database import db
 from sqlalchemy import exc
-from utils.db_helper import create_user, add_role
+from utils.db_helper import create_user, add_role, get_roles_for_user
 
 auth = Blueprint('signup', __name__)
 
@@ -97,9 +97,11 @@ def login():
 @token_required(required_permissions=None)
 def status(user: User):
     return {
-        "data": user.toJSON(),
+        "user": user.toJSON(),
+        "permissions": [userEnum.name for userEnum in get_roles_for_user(user)],
         "message": "Success"
         }, 200
+
 
 @auth.route("/auth/logout", methods=["DELETE"])
 def logout():

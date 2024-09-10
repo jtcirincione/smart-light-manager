@@ -39,7 +39,7 @@ function AuthenticatedHeader({children}) {
 
                         {/* Navigation Buttons */}
                         <div className="flex space-x-4">
-                            <Link to="/" className="text-white hover:text-gray-300">
+                            <Link to="/permissions" className="text-white hover:text-gray-300">
                                 Admin Settings
                             </Link>
                             <button className="text-red-600 pr-5" onClick={handleLogout}>

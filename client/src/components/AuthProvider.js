@@ -15,6 +15,8 @@ const AuthProvider = ({children}) => {
                 .then(async (response) => {
                     if (response.status === 200) {
                         setIsAuthenticated(true);
+                        const data = await response.json()
+                        setUser(data.user)
                     } else {
                         setIsAuthenticated(false);
                     }

@@ -3,6 +3,7 @@ from database import db
 from routes.auth import auth
 from routes.kasa import kasa_routes
 from routes.permissions_service import permissions_service
+from routes.users import users
 from dotenv import load_dotenv
 import os
 from flask_sqlalchemy import SQLAlchemy
@@ -18,6 +19,7 @@ def create_app():
     app.register_blueprint(auth)
     app.register_blueprint(kasa_routes)
     app.register_blueprint(permissions_service)
+    app.register_blueprint(users)
     load_dotenv()
     HOST = os.getenv("DB_HOST")
     USERNAME = os.getenv("MYSQL_USER")

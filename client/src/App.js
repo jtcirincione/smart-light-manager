@@ -4,6 +4,7 @@ import Login from "./pages/Login.js"
 import Home from "./pages/Home.js"
 import AdminAssignment from "./pages/AdminAssignment.js";
 import AuthProvider from "./components/AuthProvider.js";
+import PermissionsHandler from "./pages/PermissionsHandler.js";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<Home />} />
             <Route path="/admin-access" element={<AdminAssignment />} />
+            <Route path="/permissions" element={<PermissionsHandler />} />
           </Routes>
         </Router>
       </AuthProvider>

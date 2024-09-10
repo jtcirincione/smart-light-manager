@@ -13,18 +13,16 @@ function Login() {
 
             },
             body: JSON.stringify({ username, password }),
-        }).catch(err => {
-            alert("Unknown Error")
         });
 
-        console.log("Status: " + response.status)
+        console.log("Status: " + response.status);
 
         if (response.status === 200) {
             window.location.href = "/";
         }
         else {
-            let data = await response.json()
-            console.log(response.status)
+            let data = await response.json();
+            console.log(response.status);
             alert(data.message);
         }
     };
