@@ -1,12 +1,15 @@
 import AuthenticatedHeader from "../components/AuthenticatedHeader";
 import { useEffect, useState } from "react";
 import Unauthorized from "../components/Unauthorized";
+import UserCard from "../cards/UserCard";
+import Loader from "../components/Loader";
 
 function PermissionsHandler() {
 
     const [isAuthorized, setAuthorized] = useState(false);
     const [userSearch, setUserSearch] = useState("");
     const [foundUsers, setFoundUsers] = useState([])
+    const [isLoadingUsers, setIsLoadingUsers] = useState(true)
 
     useEffect(() => {
         const checkAuthStatus = async () => {
@@ -28,15 +31,26 @@ function PermissionsHandler() {
         checkAuthStatus();
     }, []);
 
-    const searchForUser = async () => {
-        const response = await fetch(`/server/users/${userSearch}`)
-        const data = await response.json()
-        setFoundUsers(data.usernames)
+    useEffect(() => {
+        const searchForUser = async () => {
+            setIsLoadingUsers(true)
+            if (userSearch == "") {
+                setFoundUsers([])
+                setIsLoadingUsers(false)
+                return;
+            }
+            const response = await fetch(`/server/users/${userSearch}`)
+            const data = await response.json()
+            setFoundUsers(data.usernames)
+            
+            setIsLoadingUsers(false)
+        }
+        searchForUser()
+    }, [userSearch]);
 
-    }
+
     const handleUserSearch = (event) => {
         setUserSearch(event.target.value)
-        searchForUser()
     };
 
 
@@ -45,15 +59,13 @@ function PermissionsHandler() {
             {!isAuthorized ? <Unauthorized /> : (
                 <div className="flex justify-center">
                     <div>
-                        <div>
-                            <span>Search for user:</span><input type="text" placeholder="username" value={userSearch} onChange={handleUserSearch} />
+                        <div className="pb-4">
+                            <span className="text-2xl">Search for user:</span><input type="text" placeholder="username" value={userSearch} onChange={handleUserSearch} />
                         </div>
-                        <div>results: </div>
-                        {foundUsers.map((username) => (
-                            <div key={username}>
-                                {username}
-                            </div>
-                        ))}
+                        <div className="text-xl">Results: </div>
+                        {isLoadingUsers ? <Loader /> : <>{foundUsers.map((username) => (
+                            <UserCard key={username} username={username} />
+                        ))}</>}
                     </div>
                 </div>
             )}
