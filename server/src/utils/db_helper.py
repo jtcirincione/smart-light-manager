@@ -33,14 +33,17 @@ def get_users_by_name_like(uname: str) -> list[str]:
     return [user.username for user in users]
 
 
-def add_role(user: User, role: RoleEnum) -> None:
+def add_role(user: User, role: RoleEnum) -> bool:
     with current_app.app_context():
         if not user_has_role(user, role):
             try:    
                 db.session.add(UserRole(user_id=user.user_id, role_id=role.value))
                 db.session.commit()
             except Exception as e:
+                db.session.rollback()
                 raise e
+            return True
+        return False
 
 
 def get_roles_for_user(user: User) -> list[RoleEnum]:

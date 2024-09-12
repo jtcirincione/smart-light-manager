@@ -11,7 +11,6 @@ permissions_service = Blueprint('permissions', __name__)
 def grant_admin_access(user):
     with current_app.app_context():
         admin_password = current_app.config["ADMIN_KEY"]
-        print("password" + admin_password)
         data = request.json
         if data["password"] == admin_password:
             add_role(user, role=RoleEnum.ADMIN)
@@ -19,10 +18,11 @@ def grant_admin_access(user):
             return "", 200
     return "", 400
 
-@permissions_service.route("/permissions/manager", methods=["POST"])
+@permissions_service.route("/<username>/permissions/manager", methods=["POST"])
 @token_required(required_permissions=["admin"])
-def grant_manager_access(user):
+def grant_manager_access(user, username):
     with current_app.app_context():
-        data = request.json
-        user_to_grant = get_user_by_name(data["username"])
-        add_role(user=user_to_grant, role=RoleEnum.MANAGER)
+        user_to_grant = get_user_by_name(username)
+        if not add_role(user=user_to_grant, role=RoleEnum.MANAGER):
+            return {"message": "Server error adding role to user", "data":None}, 500
+    return "", 200

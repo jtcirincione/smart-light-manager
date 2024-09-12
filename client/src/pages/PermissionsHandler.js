@@ -8,26 +8,28 @@ function PermissionsHandler() {
 
     const [isAuthorized, setAuthorized] = useState(false);
     const [userSearch, setUserSearch] = useState("");
-    const [foundUsers, setFoundUsers] = useState([])
-    const [isLoadingUsers, setIsLoadingUsers] = useState(true)
+    const [foundUsers, setFoundUsers] = useState([]);
+    const [isLoadingUsers, setIsLoadingUsers] = useState(true);
+    const [isLoadingAuth, setIsLoadingAuth] = useState(true);
 
     useEffect(() => {
         const checkAuthStatus = async () => {
-            fetch('server/auth/status')
-                .then(async (response) => {
-                    if (response.status === 200) {
-                        const data = await response.json();
-                        if (data.permissions.includes("MANAGER")) {
-                            setAuthorized(true);
-                        }
-                    } else {
-                        setAuthorized(false);
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
+            setIsLoadingAuth(true);
+            try {
+                const response = await fetch('server/auth/status');
+                if (response.status === 200) {
+                    const data = await response.json();
+                    setAuthorized(data.permissions.includes("MANAGER"));
+                } else {
+                    setAuthorized(false);
+                }
+            } catch (err) {
+                console.log(err);
+                setAuthorized(false);
+            } finally {
+                setIsLoadingAuth(false); // Ensure this runs after completion
+            }
+        };
         checkAuthStatus();
     }, []);
 
@@ -42,7 +44,6 @@ function PermissionsHandler() {
             const response = await fetch(`/server/users/${userSearch}`)
             const data = await response.json()
             setFoundUsers(data.usernames)
-            
             setIsLoadingUsers(false)
         }
         searchForUser()
@@ -53,10 +54,13 @@ function PermissionsHandler() {
         setUserSearch(event.target.value)
     };
 
+    if (isLoadingAuth) {
+        return <Loader />
+    }
 
     return (
         <AuthenticatedHeader>
-            {!isAuthorized ? <Unauthorized /> : (
+            {!isAuthorized && !isLoadingAuth ? <Unauthorized /> : isLoadingAuth ? <Loader /> : (
                 <div className="flex justify-center">
                     <div>
                         <div className="pb-4">
