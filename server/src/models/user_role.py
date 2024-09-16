@@ -8,5 +8,5 @@ class UserRole(db.Model):
     __table_args__= (UniqueConstraint('user_id', 'role_id', 
                                       name='uq_user_role'), {'schema':'lights'})
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey('user.user_id'))
+    user_id = Column(Integer, ForeignKey('user.user_id', ondelete='CASCADE'))
     role_id = Column(Integer, ForeignKey('role.id'))

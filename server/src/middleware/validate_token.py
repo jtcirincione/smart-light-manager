@@ -1,11 +1,9 @@
-#TODO: Implement middleware
-
 import jwt
 from datetime import datetime, timedelta
 from functools import wraps
 from flask import current_app, request
 from database import db
-from models.user import User
+from models.user_model import UserModel
 from models.user_role import UserRole
 from models.permissions import Role
 from utils.db_helper import get_roles_for_user
@@ -24,7 +22,7 @@ def token_required(required_permissions=None):
             try:
                 with current_app.app_context():
                     data = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS512'])
-                    curr_user = db.session.query(User).get(data["user_id"])
+                    curr_user = db.session.query(UserModel).get(data["user_id"])
                     if curr_user is None:
                         return {
                             "message": "Invalid authentication token",

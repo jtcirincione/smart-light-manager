@@ -3,7 +3,7 @@ import jwt, hashlib, os, json
 from datetime import datetime, timedelta
 from functools import wraps
 from middleware.validate_token import token_required
-from models.user import User
+from models.user_model import UserModel
 from database import db
 from sqlalchemy import exc
 from utils.db_helper import create_user, add_role, get_roles_for_user
@@ -25,9 +25,14 @@ def register():
     username = data['username']
     password = data['password']
     email = data['email']
+    if not username or not password or not email:
+        return {
+            "message": f"Missing required fields.",
+            "data": None,
+        }, 400
     salt = generate_salt()
     password_hash = hash_password(password, salt)
-    user = User(username=username, email=email, password=password_hash, salt=salt.hex())
+    user = UserModel(username=username, email=email, password=password_hash, salt=salt.hex())
     with current_app.app_context():
         try:
             create_user(user)
@@ -54,10 +59,15 @@ def login():
     data = request.json
     username: str = data['username']
     password: str = data['password']
+    if not username or not password:
+        return {
+            "message": f"Missing required fields.",
+            "data": None,
+        }, 400
     with current_app.app_context():
         try:
             # db.session.add(user)
-            user = db.session.query(User).filter_by(username=username).first()
+            user = db.session.query(UserModel).filter_by(username=username).first()
             if not user:
                 return {
                     "message": f"Incorrect username or password",
@@ -95,7 +105,7 @@ def login():
 
 @auth.route("/auth/status", methods=["GET"])
 @token_required(required_permissions=None)
-def status(user: User):
+def status(user: UserModel):
     return {
         "user": user.toJSON(),
         "permissions": [userEnum.name for userEnum in get_roles_for_user(user)],

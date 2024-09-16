@@ -7,7 +7,7 @@ from routes.users import users
 from dotenv import load_dotenv
 import os
 from flask_sqlalchemy import SQLAlchemy
-from models.user import User
+from models.user_model import UserModel
 from models.permissions import Role
 from models.user_role import UserRole
 import asyncio

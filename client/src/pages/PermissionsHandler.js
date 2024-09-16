@@ -43,7 +43,7 @@ function PermissionsHandler() {
             }
             const response = await fetch(`/server/users/${userSearch}`)
             const data = await response.json()
-            setFoundUsers(data.usernames)
+            setFoundUsers(data.users)
             setIsLoadingUsers(false)
         }
         searchForUser()
@@ -67,9 +67,10 @@ function PermissionsHandler() {
                             <span className="text-2xl">Search for user:</span><input type="text" placeholder="username" value={userSearch} onChange={handleUserSearch} />
                         </div>
                         <div className="text-xl">Results: </div>
-                        {isLoadingUsers ? <Loader /> : <>{foundUsers.map((username) => (
-                            <UserCard key={username} username={username} />
+                        {isLoadingUsers ? <Loader /> : <>{foundUsers.map((user) => (
+                            <UserCard key={user.username} user={user} />
                         ))}</>}
+                        {foundUsers.length == 0 && userSearch != "" && !isLoadingUsers ? <div>No users found</div> : <></>}
                     </div>
                 </div>
             )}
