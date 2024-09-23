@@ -11,3 +11,4 @@ COPY . .
 WORKDIR /app/src
 
 CMD ["python", "app.py"]
+# CMD ["gunicorn", "-k", "eventlet", "-w", "1", "-b", "0.0.0.0:5000", "app:create_app()", "--access-logfile", "-", "--error-logfile", "-"]
