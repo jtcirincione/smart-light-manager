@@ -46,3 +46,16 @@ async def change_color(h, s, v):
     except:
         #check for timeout error
         return
+    
+
+
+async def change_brightness(b):
+    try:
+        device = await asyncio.wait_for(get_device(), timeout=3)
+    except:
+        return
+    try:
+        await asyncio.wait_for(device._set_brightness(b), timeout=.007)
+    except:
+        #check for timeout error
+        return

@@ -8,6 +8,10 @@ function Signup() {
     const [email, setEmail] = useState("");
 
     const submit = async () => {
+        if (!username || !password || !email) {
+            alert("Missing required fields!")
+            return;
+        }
         const response = await fetch("/server/register", {
             method: "POST",
             headers: {
@@ -62,7 +66,7 @@ function Signup() {
                         <div className="flex justify-end items-center mt-4">Email: <input placeholder="email" required value={email} onChange={handleEmailChange} onKeyUp={handleKeyPress} className="p-2 mt-4 ml-2 text-md font-bold border border-gray-900 rounded-lg drop-shadow-lg" /></div>
                         <div className="flex justify-end items-center mt-4">Password: <input placeholder="password" value={password} onChange={handlePasswordChange} onKeyUp={handleKeyPress} className="p-2 mt-4 ml-2 text-md font-bold border border-gray-900 rounded-lg drop-shadow-lg" /></div>
                         <a className="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="https://lights.john-projects.org/login">I already have an account</a>
-                        <button className="mt-10 border py-1 px-5 rounded-md border-black bg-green-300 w-full mb-8" onClick={submit}>Submit</button>
+                        <button className="mt-10 border py-1 px-5 rounded-md border-black bg-green-300 w-full mb-8 hover:bg-green-500 active:bg-green-300" onClick={submit}>Submit</button>
                     </div>
                 </div>
                 <div className="">

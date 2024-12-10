@@ -20,3 +20,16 @@ def turn_off(user):
     except Exception as e:
         return {"error": str(e)}, 200
     return "", 200
+
+@kasa_routes.route("/lights/morning", methods=["POST"])
+def morning():
+    data = request.json
+    print("error")
+    if data["key"] == current_app.config["ADMIN_KEY"]:
+        asyncio.run(lights.on())
+        try:
+            asyncio.run(lights.change_color(51, int(40), int(100)))
+            asyncio.run(lights.change_brightness(100))
+        except Exception as e:
+            return {"error": str(e)}, 500
+    return "", 200

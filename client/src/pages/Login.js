@@ -6,6 +6,10 @@ function Login() {
     const [password, setPassword] = useState("");
 
     const submit = async () => {
+        if (!username || !password) {
+            alert("Missing required fields!")
+            return;
+        }
         const response = await fetch("/server/login", {
             method: "POST",
             headers: {
@@ -51,7 +55,7 @@ function Login() {
                         <img src="/lights.jpg" alt="lights" className="mt-10 p-3 w-[300px]"></img>
                         <div className="flex justify-end items-center mt-4">Userneame: <input placeholder="username" value={username} onChange={handleUsernameChange} onKeyUp={handleKeyPress} className="p-2 mt-4 ml-2 text-md font-bold border border-gray-900 rounded-lg drop-shadow-lg" /></div>
                         <div className="flex justify-end items-center mt-4">Password: <input placeholder="password" value={password} onChange={handlePasswordChange} onKeyUp={handleKeyPress} className="p-2 mt-4 ml-2 text-md font-bold border border-gray-900 rounded-lg drop-shadow-lg" /></div>
-                        <button className="mt-10 mb-8 border py-1 px-5 rounded-md border-black bg-green-300 w-full" onClick={submit}>Submit</button>
+                        <button className="mt-10 mb-8 border py-1 px-5 rounded-md border-black bg-green-300 w-full hover:bg-green-500 active:bg-green-300" onClick={submit}>Submit</button>
                     </div>
                 </div>
                 <div className="">
