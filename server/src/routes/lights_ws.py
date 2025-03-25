@@ -13,10 +13,15 @@ def handle_connect():
 def handle_disconnect():
     print("Client disconnected")
 
-
 @socket.on('color')
 @token_required(required_permissions=["manager"])
 def change_color(user, data):
     hsv = data["hsv"]
     asyncio.run(lights.change_color(int(hsv["h"]), int(hsv["s"]), int(hsv["v"])))
     emit('color_response', {'status': 'received'})
+
+@socket.on('brightness')
+@token_required(required_permissions=["manager"])
+def change_brightness(user, data):
+    b = data["brightness"]
+    asyncio.run(lights.change_brightness(b))

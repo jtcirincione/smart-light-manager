@@ -21,6 +21,15 @@ def turn_off(user):
         return {"error": str(e)}, 200
     return "", 200
 
+@kasa_routes.route("/lights/status", methods=["GET"])
+@token_required(required_permissions=["manager"])
+def get_status(user):
+    try:
+        is_on = asyncio.run(lights.get_status())
+        return {"status": "on" if is_on else "off"}, 200
+    except:
+        return "", 500
+
 @kasa_routes.route("/lights/morning", methods=["POST"])
 def morning():
     data = request.json

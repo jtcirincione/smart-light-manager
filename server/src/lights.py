@@ -35,6 +35,14 @@ async def off():
         return
     await asyncio.wait_for(device.turn_off(), timeout=3)
 
+async def get_status() -> bool:
+    try:
+        device = await asyncio.wait_for(get_device(), timeout=3)
+        
+        state = await asyncio.wait_for(device.get_light_state(), timeout=5)
+        return True if state['on_off'] == 1 else False
+    except Exception as e:
+        raise e
 
 async def change_color(h, s, v):
     try:

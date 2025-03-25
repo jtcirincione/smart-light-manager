@@ -6,17 +6,17 @@ export const AuthContext = createContext()
 const AuthProvider = ({children}) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [user, setUser] = useState({});
+    const [permissions, setPermissions] = useState([]);
     
     useEffect(() => {
-        const checkAuthStatus = async () => {
+        const checkAuthStatus = () => {
             setIsLoading(true);
             fetch('server/auth/status')
                 .then(async (response) => {
                     if (response.status === 200) {
                         setIsAuthenticated(true);
                         const data = await response.json()
-                        setUser(data.user)
+                        setPermissions(data.permissions)
                     } else {
                         setIsAuthenticated(false);
                     }
@@ -32,7 +32,7 @@ const AuthProvider = ({children}) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{isAuthenticated, isLoading, user}}>
+        <AuthContext.Provider value={{isAuthenticated, isLoading, permissions}}>
             {children}
         </AuthContext.Provider>
     )
