@@ -29,6 +29,18 @@ def get_status(user):
         return {"status": "on" if is_on else "off"}, 200
     except:
         return "", 500
+    
+# @kasa_routes.route("/lights/brightness")
+# @token_required(required_permissions=["manager"])
+# def set_brightness(user):
+#     data = request.json
+#     brightness = data["brightness"]
+#     try:
+#         asyncio.run(lights.change_brightness(brightness))
+#     except:
+#         return {"error": "Internal Server Errror"}, 500
+#     return "", 200
+    
 
 @kasa_routes.route("/lights/morning", methods=["POST"])
 def morning():

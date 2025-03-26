@@ -4,6 +4,8 @@
     import { useAuth } from "../components/AuthProvider";
     import "react-color-palette/css";
     import io from 'socket.io-client';
+    import Slider from "../components/Slider";
+    import useBrightness from "../components/useBrightness";
 
     function Home() {
         const [color, setColor] = useColor("#561ecb");
@@ -11,6 +13,7 @@
         const ENDPOINT = "wss://lights.john-projects.org";
         const socketRef = useRef();
         const {permissions, isAuthenticated} = useAuth();
+        const {brightness, loading, updateBrightness} = useBrightness();
 
         useEffect(() => {
         }, [permissions]);
@@ -61,7 +64,7 @@
 
         const getStatus = async () => {
             let res = await fetch("/server/lights/status")
-            while (res.status !== 200 && res.status != 403) {
+            while (res.status !== 200 && res.status != 403) { // retry upon api error
                 res = await fetch("/server/lights/status")
             }
             let data = await res.json()
@@ -88,6 +91,7 @@
                         </button>
                     </div>
                     <ColorPicker color={color} onChange={handleSetColor} />
+                    {permissions.includes("MANAGER") && (loading ? <p>retrieving brightness value...</p> : <Slider value={brightness} onChange={updateBrightness} />)}
                 </div>
             </AuthenticatedHeader>
         );

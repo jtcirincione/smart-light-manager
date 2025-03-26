@@ -20,8 +20,12 @@ def change_color(user, data):
     asyncio.run(lights.change_color(int(hsv["h"]), int(hsv["s"]), int(hsv["v"])))
     emit('color_response', {'status': 'received'})
 
-@socket.on('brightness')
+@socket.on("getBrightness")
+def send_brightness():
+    brightness = asyncio.run(lights.get_brightness())
+    emit("brightnessUpdate", brightness)
+
+@socket.on('setBrightness')
 @token_required(required_permissions=["manager"])
-def change_brightness(user, data):
-    b = data["brightness"]
+def change_brightness(user, b):
     asyncio.run(lights.change_brightness(b))
