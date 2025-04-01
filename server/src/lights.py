@@ -59,8 +59,13 @@ async def get_brightness():
     try:
         device = await asyncio.wait_for(get_device(), timeout=3)
     except:
-        return
-    state = await asyncio.wait_for(device.get_light_state(), timeout=3)
+        return 0
+    while True:
+        try:
+            state = await asyncio.wait_for(device.get_light_state(), timeout=3)
+            break
+        except:
+            pass
     return state["brightness"]
 
 async def change_brightness(b):

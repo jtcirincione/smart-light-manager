@@ -21,12 +21,14 @@ const useBrightness = () => {
     });
 
     socketRef.current.on("brightnessUpdate", (newBrightness) => {
+      console.log("I SHOULD BE SEEING THIS")
       setBrightness(newBrightness);
       setLoading(false);
     });
 
     return () => {
-      socketRef.current.off("brightnessUpdate");
+      socketRef.current.off("brightnessUpdate")
+      socketRef.current.off("connect");
       socketRef.current.disconnect();
     };
   }, []);
